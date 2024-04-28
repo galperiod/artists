@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic Landing Page</title>
+  <title>Gal.</title>
   <style>
     body {
       background-color: #f5f5f5;
@@ -36,7 +36,7 @@
       font-size: 36px;
       margin-bottom: 40px;
     }
-      
+
     .arrow {
       position: fixed;
       bottom: 20px;
@@ -44,14 +44,10 @@
       transform: translateX(-50%);
       cursor: pointer;
       font-size: 24px;
-      opacity: 0;
-      transition: opacity 0.5s;
     }
-
-    .arrow.visible {
-      opacity: 1;
-    }  
-    
+          a:visited{
+      color: #333;
+    }
   </style>
 </head>
 <body>
@@ -63,22 +59,25 @@
     <div class="paragraph"></div>
     <div class="paragraph"></div>
     <div class="paragraph"></div>
+          <div class="paragraph"></div>
+
   </div>
 
   <div class="arrow down">&#8595;</div>
-  <div class="arrow up">&#8593;</div>
+  <a href="/index.html"><div class="arrow up" style="display: none;">&#x21bb;</div></a>
 
   <script>
     const sentences = [
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+      ":: creates art influenced by currently unsolved problems in physics.",
+      ":: appreciates the emergence of problem as a necessity for human inspiration growing out of a desire for solution.",
+      ":: wants to remain anonymous because they dont want their identity to influence or speak for the work in any way."
     ];
 
     const paragraphs = [
-      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
-      "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt."
+      "Gal. is an enigmatic artist whose true identity remains shrouded in mystery. Driven by a fervent belief that art should stand on its own merit, unencumbered by the artist's personal background or circumstances, Gal. has chosen to remain anonymous. This decision allows the artwork to take center stage, encouraging viewers to engage with the pieces on a deeper level, free from any preconceived notions or biases that may arise from knowing the artist's identity.",
+      "Gal.'s artistic vision is deeply rooted in the realm of theoretical physics, drawing inspiration from the most perplexing and unsolved problems that continue to challenge scientists and researchers alike. Through their art, Gal. seeks to explore the profound questions that arise from these scientific enigmas, delving into the very nature of reality and the fundamental laws that govern our universe.",
+      "Central to Gal.'s philosophy is the idea that problems are not merely obstacles to be overcome, but rather catalysts for human inspiration and growth. They believe that the desire to find solutions to these complex issues is what drives humanity forward, pushing the boundaries of our understanding and sparking creative breakthroughs across all fields of endeavor. Gal.'s artwork serves as a visual manifestation of this concept, inviting viewers to contemplate the beauty and potential that can emerge from the most challenging and seemingly insurmountable problems.",
+        "Through their thought-provoking and visually striking pieces, Gal. aims to bridge the gap between art and science, demonstrating the inherent connection between these two seemingly disparate disciplines. By remaining anonymous, Gal. ensures that their artwork remains the focal point, allowing viewers to engage with the ideas and concepts presented without the distraction of the artist's personal identity. In doing so, Gal. creates a space for pure artistic expression and intellectual exploration, inviting audiences to embark on a journey of discovery and contemplation through the lens of their captivating and enigmatic creations."
     ];
 
     const titleElement = document.querySelector(".title");
@@ -87,9 +86,7 @@
     const downArrow = document.querySelector(".arrow.down");
     const upArrow = document.querySelector(".arrow.up");
 
-    let currentParagraph = 0;
-
-    function typeOutText(element, text, delay, callback) {
+    function typeOutText(element, text, delay) {
       let i = 0;
       element.innerHTML = "";
       function type() {
@@ -97,81 +94,49 @@
           element.innerHTML += text.charAt(i);
           i++;
           setTimeout(type, 50);
-        } else {
-          if (callback) {
-            callback();
-          }
         }
       }
       setTimeout(type, delay);
     }
 
     function displayContent() {
-      typeOutText(titleElement, "Gal.", 0, () => {
-        sentenceElements.forEach((element, index) => {
-          typeOutText(element, sentences[index], 500, () => {
-            if (index === sentenceElements.length - 1) {
-              downArrow.classList.add("visible");
-            }
-          });
-          element.classList.add("visible");
-        });
+      typeOutText(titleElement, "Gal.", 0);
+
+      sentenceElements.forEach((element, index) => {
+        typeOutText(element, sentences[index], (index + 1) * 1000);
+        element.classList.add("visible");
       });
     }
 
-    function showNextParagraph() {
-      if (currentParagraph < paragraphElements.length) {
-        titleElement.style.display = "none";
-        sentenceElements.forEach(element => element.style.display = "none");
-        paragraphElements.forEach((element, index) => {
-          if (index === currentParagraph) {
-            typeOutText(element, paragraphs[index], 0, () => {
-              currentParagraph++;
-              if (currentParagraph === paragraphElements.length) {
-                downArrow.classList.remove("visible");
-              }
-            });
-            element.classList.add("visible");
-          } else {
-            element.classList.remove("visible");
-          }
-        });
-        upArrow.classList.add("visible");
-      }
-    }
-
-    function showPreviousParagraph() {
-      if (currentParagraph > 0) {
-        currentParagraph--;
-        paragraphElements.forEach((element, index) => {
-          if (index === currentParagraph) {
-            typeOutText(element, paragraphs[index], 0);
-            element.classList.add("visible");
-          } else {
-            element.classList.remove("visible");
-          }
-        });
-        downArrow.classList.add("visible");
-        if (currentParagraph === 0) {
-          showTitle();
-        }
-      }
+    function showParagraphs() {
+      titleElement.style.display = "none";
+      sentenceElements.forEach(element => element.style.display = "none");
+      paragraphElements.forEach((element, index) => {
+        typeOutText(element, paragraphs[index], 0);
+        element.classList.add("visible");
+      });
+      downArrow.style.display = "none";
+      downArrow.removeEventListener("click", showParagraphs);
+      downArrow.addEventListener("click", refreshPage);
+      upArrow.style.display = "block";
     }
 
     function showTitle() {
       titleElement.style.display = "block";
-      sentenceElements.forEach(element => {
-        element.style.display = "block";
-        element.classList.add("visible");
-      });
-      paragraphElements.forEach(element => element.classList.remove("visible"));
-      currentParagraph = 0;
-      upArrow.classList.remove("visible");
-      downArrow.classList.add("visible");
+      sentenceElements.forEach(element => element.style.display = "block");
+      paragraphElements.forEach(element => element.style.display = "none");
+      downArrow.style.display = "block";
+      downArrow.removeEventListener("click", refreshPage);
+      downArrow.addEventListener("click", showParagraphs);
+      upArrow.style.display = "none";
     }
 
-    downArrow.addEventListener("click", showNextParagraph);
-    upArrow.addEventListener("click", showPreviousParagraph);
+    function refreshPage() {
+      location.reload();
+    }
+
+    downArrow.addEventListener("click", showParagraphs);
+    upArrow.addEventListener("click", showTitle);
 
     displayContent();
   </script>
